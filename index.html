@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html ng-app='myQuiz'>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Test Your Knowledge: Saturn</title>
+		<link rel="stylesheet" type="text/css" href="css/quiz.css">
+	</head>
+	<body>
+
+		<div id='myQuiz' ng-controller='QuizController'>
+		  <h1>Test Your Knowledge: <span>Saturn</span></h1>
+      <div class="progress">
+				<div class="{{$index === activeQuestion ? 'on' : 'off'}}
+				{{question.questionState == 'answered' ? 'answered' : 'unanswered'}}
+				{{question.isCorrect == 'correct' ? 'correct' : 'incorrect'}}" ng-repeat="question in questions"></div>
+			</div>
+      <div class="intro {{activeQuestion > -1 ? 'inactive' : 'active'}}">
+        <h2>Welcome</h2>
+        <p>
+          Click begin to test your knowledge of Saturn.
+        </p>
+        <p class="btn" ng-click="activeQuestion = 0">
+          Begin
+        </p>
+      </div>
+      <div class="question {{$index === activeQuestion ? 'active' : 'inactive'}} {{question.questionState === 'answered' ? 'answered' : 'unanswered'}}" ng-repeat="question in questions">
+        <p class="txt">{{question.question}}</p>
+        <p class="ans" ng-class= "{image:answer.image, selected:isSelected($parent.$index, $index), correct:isCorrect($parent.$index, $index)}"
+					ng-style="{'background-image':'url({{answer.image}})'}"
+					 ng-click="selectAnswer($parent.$index, $index)" ng-repeat="answer in question.answers">
+					{{answer.text}}
+				</p>
+        <div class="feedback">
+					<p ng-show="question.isCorrect == 'correct'">You are <strong>correct</strong></p>
+					<p ng-show="question.isCorrect != 'correct'">Oops! That is not correct</p>
+					<p>{{question.feedback}}</p>
+					<div class="btn" ng-click="btnContinue()">continue</div>
+				</div>
+      </div>
+      <div class="results {{numQuestions == activeQuestion ? 'active' : 'inactive'}}">
+				<h3>Results</h3>
+				<p>You scored {{percentage}}% by correctly answering {{score}} quesions of the total {{numQuestions}} questions</p>
+				<p>Use the links below to challenge your friends</p>
+				<div class="share" ng-bind-html="createShareLinks(percentage)">
+
+				</div>
+			</div>
+		</div>
+	<script src="js/angular.min.js" charset="utf-8"></script>
+	<script src="js/quiz.js" charset="utf-8"></script>
+<script src="http://localhost:35729/livereload.js" charset="utf-8"></script>
+	</body>
+</html>
